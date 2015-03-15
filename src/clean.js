@@ -47,7 +47,7 @@ function clean(directoryPath, isRoot, done) {
  * @returns {Object}
  */
 function parse(args) {
-  return new Command().version(require('./package').version).parse(args);
+  return new Command().version(require('../package').version).parse(args);
 }
 
 if (module === require.main) {

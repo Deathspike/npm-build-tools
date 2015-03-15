@@ -12,7 +12,7 @@ var path = require('path');
  */
 module.exports = function(input, done) {
   var options = input || parse(process.argv);
-  var sourcePath = options.source || process.cwd(); 
+  var sourcePath = options.source || process.cwd();
   find(options.args || options, process.cwd(), function(err, relativePaths) {
     if (err) return (done || console.error)(err);
     concat(sourcePath, relativePaths, function(err, result) {
@@ -42,7 +42,7 @@ function concat(sourcePath, relativePaths, done) {
  * @returns {Object}
  */
 function parse(args) {
-  return new Command().version(require('./package').version)
+  return new Command().version(require('../package').version)
     .option('-s, --source <s>', 'The source path.')
     .parse(args);
 }

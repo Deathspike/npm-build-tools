@@ -1,0 +1,20 @@
+{
+  "author": "Roel van Uden",
+  "description": "Cross-platform command-line tools to help use npm as a build tool.",
+  "keywords": ["build", "cli", "clean", "concat", "copy", "glob", "npm", "output", "tool"],
+  "license": "MIT",
+  "main": "src/index.js",
+  "name": "npm-build-tools",
+  "repository": {"type": "git", "url": "git://github.com/Deathspike/npm-build-tools.git"},
+  "version": "1.0.0",
+  "bin": {
+    "nbt-clean": "./bin/nbt-clean",
+    "nbt-concat": "./bin/nbt-concat",
+    "nbt-copy": "./bin/nbt-copy",
+    "nbt-output": "./bin/nbt-output"
+  },
+  "dependencies": {
+    "commander": "^2.7.1",
+    "glob": "^5.0.1"
+  }
+}

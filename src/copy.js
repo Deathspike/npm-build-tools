@@ -14,7 +14,7 @@ var path = require('path');
 module.exports = function(input, done) {
   var options = input || parse(process.argv);
   var destinationPath = options.destination || process.cwd();
-  var sourcePath = options.source || process.cwd(); 
+  var sourcePath = options.source || process.cwd();
   find(options.args || options, sourcePath, function(err, relativePaths) {
     if (err) return (done || console.error)(err);
     copy(sourcePath, destinationPath, relativePaths, function(err) {
@@ -50,7 +50,7 @@ function copy(sourcePath, destinationPath, relativePaths, done) {
  * @returns {Object}
  */
 function parse(args) {
-  return new Command().version(require('./package').version)
+  return new Command().version(require('../package').version)
     .option('-d, --destination <s>', 'The destination path.')
     .option('-s, --source <s>', 'The source path.')
     .parse(args);

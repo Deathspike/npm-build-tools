@@ -6,7 +6,7 @@
   "main": "src/index.js",
   "name": "npm-build-tools",
   "repository": {"type": "git", "url": "git://github.com/Deathspike/npm-build-tools.git"},
-  "version": "1.0.0",
+  "version": "1.0.1",
   "bin": {
     "nbt-clean": "./bin/nbt-clean",
     "nbt-concat": "./bin/nbt-concat",

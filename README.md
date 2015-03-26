@@ -1,58 +1,81 @@
 # npm-build-tools
 
-Cross-platform command-line tools to help use npm as a build tool. This collection of command-line tools was  inspired by the following blog post by Keith Cirkel: [How to Use npm as a Build Tool](http://blog.keithcirkel.co.uk/how-to-use-npm-as-a-build-tool/). Incorporating the described approach is a little hard when aiming for cross-platform support, and this collection of tools emerged to solve the pitfalls I encountered.
+Cross-platform command-line tools to help use npm as a build tool. This collection of command-line tools was  inspired by the following blog post by Keith Cirkel: [How to Use npm as a Build Tool](http://blog.keithcirkel.co.uk/how-to-use-npm-as-a-build-tool/). Incorporating the described approach is a hard when aiming for cross-platform support, and this collection of tools emerged to solve the pitfalls I encountered.
 
 ## Commands
 
-### nbt-clean
+### n-clean
 
-Cleans an entire directory. The effect is similar to `rm -rf`. Example:
+Cleans a directory or file. The effect is similar to `rm -rf`. Example:
 
-    nbt-clean www
+    n-clean www
 
-### nbt-concat
+### n-concat
 
-Concatenate the  matched files and prints the output to `stdout`. Example:
+Concatenates the matched files and prints to `stdout`. Example:
 
-    nbt-concat --source src 'scripts/**/*.js'
+    n-concat --source src 'scripts/**/*.js'
 
 *Globs* are supported. Additional command line options:
 
-* `-s, --source <s>` contains the source path in which to match files.
+* `-s, --source <s>` contains the source path.
 
-### nbt-copy
+### n-copy
 
 Copies the matched files to the destination folder. Example:
 
-    nbt-copy --source src --destination www '*' 'content/**/*'
+    n-copy --source src --destination www '*' 'content/**/*'
 
 *Globs* are supported. Additional command line options:
 
-* `-d, --destination<s>` contains the destination path to which to copy files.
-* `-s, --source <s>` contains the source path in which to match files.
+* `-d, --destination<s>` contains the destination path.
+* `-s, --source <s>` contains the source path.
 
-### nbt-output
+### n-pipe
 
-Output `stdin` to the output file. Similar to `command > file`. Example:
+Pipe `stdin` to a file. Similar to `> file`. Example:
 
-    nbt-output non/existent/file.dat
+    n-pipe non/existent/file.dat
 
-Unlike built-in commands, `nbt-output` will create directories when necessary.
+Unlike built-in commands, `n-pipe` creates directories when necessary.
+
+### n-run
+
+Executes command(s) in parallel. Example:
+
+    n-run "echo Hello world!" "echo Hello world!"
+
+A watcher can be created to run command(s) on a file change. Example:
+
+    n-run -w *.js "echo The file changed!"
+
+Glob expansions are supported with `$g[]`. Example:
+
+    n-run "jshint $g[*.js]"
+
+Variable expansions (from `package.json/config`) are supported with `$v[]`. Example:
+
+    n-run "n-concat $v[js-bower-dependencies]"
+
+Additional command line options:
+
+* `-s, --source <s>` contains the source path (for expand/watch).
+* `-w, --watch <s>` contains the watched files.
 
 ## Examples
 
-Concatenate dependency files and output to `www/scripts/dep.min.js`:
+Concatenate dependency files and pipe to `www/scripts/dep.min.js`:
 
-    nbt-concat angular.min.js bootstrap.min.js jquery.min.js | nbt-output www/scripts/dep.min.js
+    n-concat angular.min.js bootstrap.min.js jquery.min.js | n-pipe www/scripts/dep.min.js
 
 Copy static assets from the `src` directory to the `www` directory:
 
-    nbt-copy --source src --destination www '*' 'content/**/*'
+    n-copy --source src --destination www '*' 'content/**/*'
 
 Compiling with `browserify` to `www/scripts/apps.min.js`:
 
-    browserify src/scripts/app.js | nbt-output www/scripts/app.min.js
+    browserify src/scripts/app.js | n-pipe www/scripts/app.min.js
 
 Deleting the `www` folder:
 
-    nbt-clean www
+    n-clean www

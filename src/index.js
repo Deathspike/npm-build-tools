@@ -4,5 +4,6 @@ module.exports = {
   clean: require('./clean'),
   concat: require('./concat'),
   copy: require('./copy'),
-  output: require('./output')
+  pipe: require('./pipe'),
+  run: require('./run')
 };

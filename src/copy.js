@@ -1,6 +1,7 @@
 'use strict';
-var Command = require('commander').Command;
+var cmd = require('./utilities/cmd');
 var each = require('./utilities/each');
+var exit = require('./utilities/exit');
 var find = require('./utilities/find');
 var fs = require('fs');
 var make = require('./utilities/make');
@@ -8,18 +9,20 @@ var path = require('path');
 
 /**
  * ...
- * @param {{args: Array.<string>, destination: ?string, source: ?string}=} input
+ * @param {{args: Array.<string>, destination?: string, source?: string}=} input
  * @param {function(Error=)=} done
  */
 module.exports = function(input, done) {
-  var options = input || parse(process.argv);
-  var destinationPath = options.destination || process.cwd();
-  var sourcePath = options.source || process.cwd();
-  find(options.args || options, sourcePath, function(err, relativePaths) {
-    if (err) return (done || console.error)(err);
-    copy(sourcePath, destinationPath, relativePaths, function(err) {
-      if (err) return (done || console.error)(err);
-      if (done) done();
+  parse(input, function(err, options) {
+    if (err) return exit(err, done);
+    var destinationPath = options.destination || process.cwd();
+    var sourcePath = options.source || process.cwd();
+    find(options.args, sourcePath, function(err, relativePaths) {
+      if (err) return exit(err, done);
+      copy(sourcePath, destinationPath, relativePaths, function(err) {
+        if (err) return exit(err, done);
+        if (done) done();
+      });
     });
   });
 };
@@ -45,15 +48,17 @@ function copy(sourcePath, destinationPath, relativePaths, done) {
 }
 
 /**
- * Parses the arguments into a set of options.
- * @param {Array.<string>} args
- * @returns {Object}
+ * Parses input into options.
+ * @param {{args: Array.<string>, destination?: string, source?: string}=} input
+ * @param {function(Error, {args: Array.<string>, destination?: string, source?: string}=)} done
  */
-function parse(args) {
-  return new Command().version(require('../package').version)
-    .option('-d, --destination <s>', 'The destination path.')
-    .option('-s, --source <s>', 'The source path.')
-    .parse(args);
+function parse(input, done) {
+  if (input && input.args) return done(undefined, input);
+  if (input) done(undefined, {args: [].concat(input)});
+  cmd([
+    {option: '-d, --destination <s>', text: 'The destination path.'},
+    {option: '-s, --source <s>', text: 'The source path.'}
+  ], done);
 }
 
 if (module === require.main) {

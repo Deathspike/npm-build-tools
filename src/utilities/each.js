@@ -12,7 +12,7 @@ module.exports = function(items, handler, done) {
   if (!Array.isArray(items)) items = [items];
   (function next(err) {
     i += 1;
-    if (err || i >= items.length) return done(err);
-    handler(items[i], next);
+    if (!err && i < items.length) return handler(items[i], next);
+    if (done) done(err);
   })();
 };

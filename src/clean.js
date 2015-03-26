@@ -1,6 +1,7 @@
 'use strict';
-var Command = require('commander').Command;
+var cmd = require('./utilities/cmd');
 var each = require('./utilities/each');
+var exit = require('./utilities/exit');
 var fs = require('fs');
 var path = require('path');
 
@@ -10,12 +11,14 @@ var path = require('path');
  * @param {function(Error=)=} done
  */
 module.exports = function(input, done) {
-  var options = input || parse(process.argv);
-  each(options.args || options, function(directoryPath, next) {
-    clean(directoryPath, true, next);
-  }, function(err) {
-    if (err) return (done || console.error)(err);
-    if (done) done();
+  parse(input, function(err, options) {
+    if (err) return exit(err, done);
+    each(options.args, function(directoryPath, next) {
+      clean(directoryPath, true, next);
+    }, function(err) {
+      if (err) return exit(err, done);
+      if (done) done();
+    });
   });
 };
 
@@ -25,29 +28,35 @@ module.exports = function(input, done) {
  * @param {function(Error=)} done
  */
 function clean(directoryPath, isRoot, done) {
-  fs.readdir(directoryPath, function(err, relativePaths) {
+  fs.stat(directoryPath, function(err, stat) {
     if (err) return done(isRoot ? undefined : err);
-    each(relativePaths, function(relativePath, next) {
-      var absolutePath = path.join(directoryPath, relativePath);
-      fs.stat(absolutePath, function(err, stats) {
-        if (err) return next(err);
-        if (!stats.isDirectory()) return fs.unlink(absolutePath, next);
-        clean(absolutePath, false, next);
-      });
-    }, function(err) {
+    if (stat.isFile()) return fs.unlink(directoryPath, done);
+    fs.readdir(directoryPath, function(err, relativePaths) {
       if (err) return done(err);
-      fs.rmdir(directoryPath, done);
+      each(relativePaths, function(relativePath, next) {
+        var absolutePath = path.join(directoryPath, relativePath);
+        fs.stat(absolutePath, function(err, stats) {
+          if (err) return next(err);
+          if (!stats.isDirectory()) return fs.unlink(absolutePath, next);
+          clean(absolutePath, false, next);
+        });
+      }, function(err) {
+        if (err) return done(err);
+        fs.rmdir(directoryPath, done);
+      });
     });
   });
 }
 
 /**
- * Parses the arguments into a set of options.
- * @param {Array.<string>} args
- * @returns {Object}
+ * Parses input into options.
+ * @param {({args: Array.<string>}|Array.<string>|string)=} input
+ * @param {function(Error, {args: Array.<string>}=)} done
  */
-function parse(args) {
-  return new Command().version(require('../package').version).parse(args);
+function parse(input, done) {
+  if (input && input.args) return done(undefined, input);
+  if (input) done(undefined, {args: [].concat(input)});
+  cmd([], done);
 }
 
 if (module === require.main) {

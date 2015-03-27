@@ -28,7 +28,18 @@ Copies the matched files to the destination folder. Example:
 
 *Globs* are supported. Additional command line options:
 
-* `-d, --destination<s>` contains the destination path.
+* `-d, --divider<s>` contains the divider (default \n).
+* `-s, --source <s>` contains the source path.
+
+### n-embed
+
+Transforms HTML files into an embedded angular $templateCache wrapper module.
+
+    n-embed -s src views/**/*.html
+
+Additional command line options:
+
+* `-m, --module <s>` contains the module name (default: app).
 * `-s, --source <s>` contains the source path.
 
 ### n-pipe

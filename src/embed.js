@@ -17,7 +17,7 @@ module.exports = function(input, done) {
     var sourcePath = options.source || process.cwd();
     find(options.args, sourcePath, function(err, relativePaths) {
       if (err) return exit(err, done);
-      embed(sourcePath, relativePaths, options.module || 'app', function(err) {
+      embed(sourcePath, relativePaths, options.module || 'tml', function(err) {
         if (err) return exit(err, done);
         if (done) done();
       });
@@ -38,16 +38,17 @@ function embed(sourcePath, relativePaths, name, done) {
     var fullPath = path.join(sourcePath, relativePath);
     fs.readFile(fullPath, 'utf8', function(err, text) {
       if (err) return next(err);
-      items += '$templateCache.put(\'' +
+      items += '  $templateCache.put(\'' +
         inline(relativePath) + '\', \'' +
-        inline(text.trim()) + '\');';
+        inline(text.trim()) + '\');\n';
       next();
     });
   }, function(err) {
     if (err) return done(err);
-    console.log('angular.module(\'' +
-      inline(name) + '\').run([\'$templateCache\', function($templateCache) {' +
-      items + '}]);');
+    console.log(
+      'angular.module(\'' + inline(name) + '\', []).run([\'$templateCache\', function($templateCache) {\n' +
+      items +
+      '}]);');
     done();
   });
 }
@@ -82,7 +83,7 @@ function parse(input, done) {
   if (input && input.args) return done(undefined, input);
   if (input) done(undefined, {args: [].concat(input)});
   cmd([
-    {option: '-m, --module <s>', text: 'The module name. (Default: app)'},
+    {option: '-m, --module <s>', text: 'The module name. (Default: tml)'},
     {option: '-s, --source <s>', text: 'The source path.'}
   ], done);
 }

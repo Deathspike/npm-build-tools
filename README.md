@@ -39,7 +39,7 @@ Transforms HTML files into an embedded angular $templateCache wrapper module.
 
 Additional command line options:
 
-* `-m, --module <s>` contains the module name (default: app).
+* `-m, --module <s>` contains the module name (default: tml).
 * `-s, --source <s>` contains the source path.
 
 ### n-pipe

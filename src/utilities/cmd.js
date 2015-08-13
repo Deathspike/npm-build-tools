@@ -14,9 +14,10 @@ module.exports = function(entries, done) {
   loadConfig(function(err, config) {
     if (err) return done(err);
     var sourcePath = options.source || process.cwd();
+    var ignore = options.ignore || null;
     variables(options.args, config, function(err) {
       if (err) return done(err);
-      globs(sourcePath, options.args, function(err, args) {
+      globs(sourcePath, ignore, options.args, function(err, args) {
         if (err) return done(err);
         options.args = args;
         done(undefined, options);
@@ -31,7 +32,7 @@ module.exports = function(entries, done) {
  * @param {Array.<string>} commands
  * @param {function(Error, Array.<string>=)} done
  */
-function globs(sourcePath, commands, done) {
+function globs(sourcePath, ignore, commands, done) {
   var expression = /\$g\[(.+?)\]/g;
   var result = [];
   each(commands, function(command, next) {
@@ -40,7 +41,7 @@ function globs(sourcePath, commands, done) {
     var matches = [];
     while ((match = expression.exec(command))) matches.push(match);
     each(matches, function(patternMatch, next) {
-      find(patternMatch[1], sourcePath, function(err, relativePaths) {
+      find(patternMatch[1], sourcePath, ignore, function(err, relativePaths) {
         if (err) return next(err);
         map[patternMatch[1]] = relativePaths;
         next();

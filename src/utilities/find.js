@@ -8,10 +8,10 @@ var glob = require('glob');
  * @param {string} sourcePath
  * @param {function(Error, Array.<string>=)} done
  */
-module.exports = function(patterns, sourcePath, done) {
+module.exports = function(patterns, sourcePath, ignore, done) {
   var relativePaths = {};
   each(patterns, function(pattern, next) {
-    glob(pattern, {cwd: sourcePath, nodir: true}, function(err, foundPaths) {
+    glob(pattern, {cwd: sourcePath, nodir: true, ignore: ignore}, function(err, foundPaths) {
       if (err) return next(err);
       foundPaths.forEach(function(foundPath) {
         relativePaths[foundPath] = true;

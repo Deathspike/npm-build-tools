@@ -17,7 +17,8 @@ module.exports = function(input, done) {
     if (err) return exit(err, done);
     var destinationPath = options.destination || process.cwd();
     var sourcePath = options.source || process.cwd();
-    find(options.args, sourcePath, function(err, relativePaths) {
+    var ignore = options.ignore || null;
+    find(options.args, sourcePath, ignore, function(err, relativePaths) {
       if (err) return exit(err, done);
       copy(sourcePath, destinationPath, relativePaths, function(err) {
         if (err) return exit(err, done);
@@ -57,7 +58,8 @@ function parse(input, done) {
   if (input) done(undefined, {args: [].concat(input)});
   cmd([
     {option: '-d, --destination <s>', text: 'The destination path.'},
-    {option: '-s, --source <s>', text: 'The source path.'}
+    {option: '-s, --source <s>', text: 'The source path.'},
+    {option: '-i, --ignore <s>', text: 'Add a pattern or an array of patterns to exclude matches.'}
   ], done);
 }
 

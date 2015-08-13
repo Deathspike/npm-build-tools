@@ -14,22 +14,24 @@ Cleans a directory or file. The effect is similar to `rm -rf`. Example:
 
 Concatenates the matched files and prints to `stdout`. Example:
 
-    n-concat --source src 'scripts/**/*.js'
+    n-concat --source src -i scripts/assets/** 'scripts/**/*.js'
 
 *Globs* are supported. Additional command line options:
 
 * `-s, --source <s>` contains the source path.
+* `-i, --ignore <s>` Add a pattern or an array of patterns to exclude matches.
 
 ### n-copy
 
 Copies the matched files to the destination folder. Example:
 
-    n-copy --source src --destination www '*' 'content/**/*'
+    n-copy --source src --destination www -i scripts/assets/** '*' 'content/**/*'
 
 *Globs* are supported. Additional command line options:
 
 * `-d, --divider<s>` contains the divider (default \n).
 * `-s, --source <s>` contains the source path.
+* `-i, --ignore <s>` Add a pattern or an array of patterns to exclude matches.
 
 ### n-embed
 
@@ -41,6 +43,7 @@ Additional command line options:
 
 * `-m, --module <s>` contains the module name (default: tml).
 * `-s, --source <s>` contains the source path.
+* `-i, --ignore <s>` Add a pattern or an array of patterns to exclude matches.
 
 ### n-pipe
 

@@ -9,7 +9,7 @@
     "type": "git",
     "url": "git://github.com/Deathspike/npm-build-tools.git"
   },
-  "version": "2.1.1",
+  "version": "2.2.0",
   "bin": {
     "n-clean": "./bin/n-clean",
     "n-concat": "./bin/n-concat",

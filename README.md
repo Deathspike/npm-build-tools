@@ -14,7 +14,7 @@ Cleans a directory or file. The effect is similar to `rm -rf`. Example:
 
 Concatenates the matched files and prints to `stdout`. Example:
 
-    n-concat --source src -i scripts/assets/** 'scripts/**/*.js'
+    n-concat --source src --ignore "scripts/assets/**" "scripts/**/*.js"
 
 *Globs* are supported. Additional command line options:
 
@@ -25,7 +25,7 @@ Concatenates the matched files and prints to `stdout`. Example:
 
 Copies the matched files to the destination folder. Example:
 
-    n-copy --source src --destination www -i scripts/assets/** '*' 'content/**/*'
+    n-copy --source src --destination www --ignore "scripts/assets/**" "*" "content/**/*"
 
 *Globs* are supported. Additional command line options:
 
@@ -37,7 +37,7 @@ Copies the matched files to the destination folder. Example:
 
 Transforms HTML files into an embedded angular $templateCache wrapper module.
 
-    n-embed -s src views/**/*.html
+    n-embed --source src "views/**/*.html"
 
 Additional command line options:
 
@@ -61,7 +61,7 @@ Executes command(s) in parallel. Example:
 
 A watcher can be created to run command(s) on a file change. Example:
 
-    n-run -w *.js "echo The file changed!"
+    n-run -w "*.js" "echo The file changed!"
 
 Glob expansions are supported with `$g[]`. Example:
 
@@ -84,7 +84,7 @@ Concatenate dependency files and pipe to `www/scripts/dep.min.js`:
 
 Copy static assets from the `src` directory to the `www` directory:
 
-    n-copy --source src --destination www '*' 'content/**/*'
+    n-copy --source src --destination www "*" "content/**/*"
 
 Compiling with `browserify` to `www/scripts/apps.min.js`:
 

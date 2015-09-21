@@ -9,7 +9,7 @@
     "type": "git",
     "url": "git://github.com/Deathspike/npm-build-tools.git"
   },
-  "version": "2.2.0",
+  "version": "2.2.2",
   "bin": {
     "n-clean": "./bin/n-clean",
     "n-concat": "./bin/n-concat",
@@ -19,8 +19,8 @@
     "n-run": "./bin/n-run"
   },
   "dependencies": {
-    "commander": "^2.7.1",
-    "chokidar": "^1.0.0-rc4",
-    "glob": "^5.0.1"
+    "commander": "2.7.1",
+    "chokidar": "1.0.0-rc4",
+    "glob": "5.0.1"
   }
 }

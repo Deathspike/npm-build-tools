@@ -16,7 +16,6 @@ module.exports = function(patterns, sourcePath, ignorePatterns, done) {
     ignorePatterns = null;
   }
   each(patterns, function(pattern, next) {
-    console.log(pattern);
     glob(pattern, {cwd: sourcePath, nodir: true, ignore: ignorePatterns}, function(err, foundPaths) {
       if (err) return next(err);
       foundPaths.forEach(function(foundPath) {

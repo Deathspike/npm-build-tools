@@ -6,11 +6,15 @@ var glob = require('glob');
  * Finds the files matched by the patterns in the source directory.
  * @param {(Array.<string>|string)} patterns
  * @param {string} sourcePath
- * @param {string} ignorePatterns
+ * @param {string=} ignorePatterns
  * @param {function(Error, Array.<string>=)} done
  */
 module.exports = function(patterns, sourcePath, ignorePatterns, done) {
   var relativePaths = {};
+  if (typeof ignorePatterns === 'function') {
+    done = ignorePatterns;
+    ignorePatterns = null;
+  }
   each(patterns, function(pattern, next) {
     console.log(pattern);
     glob(pattern, {cwd: sourcePath, nodir: true, ignore: ignorePatterns}, function(err, foundPaths) {

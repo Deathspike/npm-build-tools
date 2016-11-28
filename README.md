@@ -29,7 +29,7 @@ Copies the matched files to the destination folder. Example:
 
 *Globs* are supported. Additional command line options:
 
-* `-d, --divider<s>` contains the divider (default \n).
+* `-d, --destination<s>` The destination path.
 * `-s, --source <s>` contains the source path.
 * `-i, --ignore <s>` Add a pattern or an array of patterns to exclude matches.
 
